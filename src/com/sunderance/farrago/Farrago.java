@@ -1,9 +1,13 @@
 package com.sunderance.farrago;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -20,34 +24,62 @@ import org.newdawn.slick.SlickException;
  * @author Robert Berry
  */
 public class Farrago extends BasicGame {
-	private static int WIDTH = 800;
-	private static int HEIGHT = 600;
+	private static int WIDTH = 800, HEIGHT = 600;
 	private static boolean FULL_SCREEN = false;
+	private static String RESOURCE_FOLDER = "res";
+	
+	private LinkedList<Entity> entities = new LinkedList<Entity>();
+	private HashMap<String,Image> imageCache = new HashMap<String,Image>();
 	
 	public Farrago() {
 		super("Farrago");
 	}
 	
+	/**
+	 * Given the path from the 'res' folder, returns the requested Image. Caches
+	 * on first load.
+	 * 
+	 * @param path The file path
+	 * @return The image
+	 */
+	private Image getImage(String path) {
+		path = Utils.pathJoin(RESOURCE_FOLDER, path);
+		if (!imageCache.containsKey(path)) {
+			try {
+				imageCache.put(path, new Image(path));
+			} catch (SlickException e) {
+				e.printStackTrace();
+				// force quit here? could result in a null pointer error
+			}
+		}
+		return imageCache.get(path);
+	}
+	
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		// TODO Auto-generated method stub
+		for (Entity entity: entities) {
+			entity.draw();
+		}
 
 	}
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		// TODO Auto-generated method stub
+		// Preload entitites, storing their images in the HashMap?
 
 	}
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
-		// TODO Auto-generated method stub
-
+		for (Entity entity : entities) {
+			entity.step(delta);
+		}
 	}
 
 	/**
-	 * @param args
+	 * Entry point for the game
+	 * 
+	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
 		try {
