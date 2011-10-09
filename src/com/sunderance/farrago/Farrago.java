@@ -1,13 +1,11 @@
 package com.sunderance.farrago;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -28,33 +26,14 @@ public class Farrago extends BasicGame {
 	private static boolean FULL_SCREEN = false;
 	private static String RESOURCE_FOLDER = "res";
 	
+	private CachedImageFactory imageFactory;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();
-	private HashMap<String,Image> imageCache = new HashMap<String,Image>();
 	
 	public Farrago() {
 		super("Farrago");
+		imageFactory = new CachedImageFactory(RESOURCE_FOLDER);
 	}
-	
-	/**
-	 * Given the path from the 'res' folder, returns the requested Image. Caches
-	 * on first load.
-	 * 
-	 * @param path The file path
-	 * @return The image
-	 */
-	private Image getImage(String path) {
-		path = Utils.pathJoin(RESOURCE_FOLDER, path);
-		if (!imageCache.containsKey(path)) {
-			try {
-				imageCache.put(path, new Image(path));
-			} catch (SlickException e) {
-				e.printStackTrace();
-				// force quit here? could result in a null pointer error
-			}
-		}
-		return imageCache.get(path);
-	}
-	
+		
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		for (Entity entity: entities) {
@@ -65,14 +44,14 @@ public class Farrago extends BasicGame {
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		// Preload entitites, storing their images in the HashMap?
+		// Load entities, passing them the CachedImageFactory
 
 	}
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		for (Entity entity : entities) {
-			entity.step(delta);
+			entity.step(gc, delta);
 		}
 	}
 

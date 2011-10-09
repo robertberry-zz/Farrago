@@ -8,27 +8,66 @@ import org.newdawn.slick.Image;
  * 
  * @author Robert Berry
  */
-public class Entity {
+abstract public class Entity {
 	private double x, y, xSpeed, ySpeed, xAcceleration, yAcceleration, radius;
 	private Image sprite;
-	private Behaviour behaviour;
 	
-	public Entity(float initial_x, float initial_y, float _radius, Image _sprite,
-			Behaviour _behaviour) {
+	/**
+	 * Constructs an Entity at a given position with its sprite loaded from a
+	 * given ImageFactory and with its radius explicitly set.
+	 * 
+	 * @param initial_x
+	 * @param initial_y
+	 * @param imageFactory
+	 * @param _radius
+	 */
+	public Entity(double initial_x, double initial_y,
+			ImageFactory imageFactory, double _radius) {
 		x = initial_x;
 		y = initial_y;
+		sprite = imageFactory.createImage(getSpritePath());
 		radius = _radius;
-		sprite = _sprite;
-		behaviour = _behaviour;
 	}
+	
+	/**
+	 * Constructs an Entity at a given position with its sprite loaded from
+	 * a given ImageFactory and its radius automatically calculated from the
+	 * width and height of the image loaded.
+	 * 
+	 * @param initial_x
+	 * @param initial_y
+	 * @param imageFactory
+	 */
+	public Entity(double initial_x, double initial_y,
+			ImageFactory imageFactory) {
+		x = initial_x;
+		y = initial_y;
+		sprite = imageFactory.createImage(getSpritePath());
+		radius = Math.min(sprite.getHeight(), sprite.getWidth()) / 2.0;
+	}
+	
+	/**
+	 * Returns the path to the sprite image in the resources folder
+	 * 
+	 * @return The path
+	 */
+	abstract protected String getSpritePath();
+	
+	/**
+	 * Performs subclass specific behaviour each step
+	 * 
+	 * @param gc The GameContainer for the game
+	 * @param delta The time delta
+	 */
+	abstract protected void stepBehaviour(GameContainer gc, int delta);
 	
 	/**
 	 * Updates position of the entity given the amount of time passed
 	 * 
 	 * @param time The amount of time elapsed
 	 */
-	public void step(GameContainer gc, float delta) {
-		behaviour.step(gc, delta);
+	public void step(GameContainer gc, int delta) {
+		stepBehaviour(gc, delta);
 		x += xSpeed + Math.pow(delta, 2) * xAcceleration / 2;
 		y += ySpeed + Math.pow(delta, 2) * yAcceleration / 2;
 	}
@@ -37,7 +76,7 @@ public class Entity {
 	 * Draws the image on the screen
 	 */
 	public void draw() {
-		sprite.draw((int) (x - radius), (int) (y - radius));
+		sprite.drawCentered((int) x, (int) y);
 	}
 
 	/**
