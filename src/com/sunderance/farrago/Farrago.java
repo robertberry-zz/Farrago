@@ -1,6 +1,7 @@
 package com.sunderance.farrago;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -52,6 +53,13 @@ public class Farrago extends BasicGame {
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
+		// unset references to any dead entities
+		for (ListIterator<Entity> it = entities.listIterator(); it.hasNext();) {
+			if (it.next().isDead()) {
+				it.remove();
+			}
+		}
+		// call step code for all entities
 		for (Entity entity : entities) {
 			entity.step(gc, delta);
 		}
@@ -71,5 +79,4 @@ public class Farrago extends BasicGame {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -62,6 +62,14 @@ abstract public class Entity {
 	abstract protected void stepBehaviour(GameContainer gc, int delta);
 	
 	/**
+	 * Returns whether the entity is dead (and therefore can be removed from
+	 * play).
+	 * 
+	 * @return Whether dead
+	 */
+	abstract public boolean isDead();
+	
+	/**
 	 * Updates position of the entity given the amount of time passed
 	 * 
 	 * @param time The amount of time elapsed

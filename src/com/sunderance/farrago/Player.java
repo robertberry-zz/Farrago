@@ -19,4 +19,10 @@ public class Player extends Entity {
 		
 	}
 
+	@Override
+	public boolean isDead() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
