@@ -6,6 +6,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -28,6 +29,7 @@ public class Farrago extends BasicGame {
 	
 	private CachedImageFactory imageFactory;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();
+	private Image background;
 	
 	public Farrago() {
 		super("Farrago");
@@ -36,16 +38,16 @@ public class Farrago extends BasicGame {
 		
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
+		background.draw(0f, 0f);
 		for (Entity entity: entities) {
 			entity.draw();
 		}
-
 	}
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		// Load entities, passing them the CachedImageFactory
-
+		background = imageFactory.createImage("background.png");
 	}
 
 	@Override
