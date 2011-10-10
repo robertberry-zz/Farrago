@@ -178,12 +178,30 @@ abstract public class Entity {
 	}
 	
 	/**
+	 * Sets the x coordinate of the Entity
+	 * 
+	 * @param x The coordinate
+	 */
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	/**
 	 * Returns the y coordinate of the Entity
 	 * 
 	 * @return Y coordinate in pixels
 	 */
 	public double getY() {
 		return y;
+	}
+	
+	/**
+	 * Sets the y coordinate of the Entity
+	 * 
+	 * @param y The coordinate
+	 */
+	public void setY(double y) {
+		this.y = y;
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Farrago extends BasicGame {
 	private static int WIDTH = 800, HEIGHT = 600;
+	private static int PLAYER_SPAWN_X = WIDTH / 2, PLAYER_SPAWN_Y = HEIGHT - 45;
 	private static boolean FULL_SCREEN = false;
 	private static String RESOURCE_FOLDER = "res";
 	
@@ -49,7 +50,7 @@ public class Farrago extends BasicGame {
 	public void init(GameContainer gc) throws SlickException {
 		// Load entities, passing them the CachedImageFactory
 		background = imageFactory.createImage("background.png");
-		entities.add(new Player(WIDTH / 2, HEIGHT - 20, imageFactory));
+		entities.add(new Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y, imageFactory));
 	}
 
 	@Override

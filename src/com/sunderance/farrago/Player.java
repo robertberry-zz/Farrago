@@ -56,6 +56,20 @@ public class Player extends Entity {
 		} else {
 			setXAcceleration(getXAcceleration() + deceleration);
 		}
+		
+		/* prevent from going off left or right side of screen */
+		double radius, x, y, width;
+		radius = getRadius(); x = getX(); y = getY(); width = gc.getWidth();
+		
+		if (x + radius > width) {
+			setXAcceleration(0);
+			setXSpeed(0);
+			setX(width - radius);
+		} else if (x - radius < 0) {
+			setXAcceleration(0);
+			setXSpeed(0);
+			setX(0 + radius);
+		}
 	}
 
 	@Override
