@@ -6,9 +6,11 @@ abstract public class Bullet extends Entity {
 	private boolean offScreen = false;
 	private boolean hitSomething = false;
 	
-	public Bullet(double initial_x, double initial_y, ImageFactory imageFactory) {
-		super(initial_x, initial_y, imageFactory);
-		
+	public Bullet(double initialX, double initialY, double xSpeed, double ySpeed,
+			ImageFactory imageFactory) {
+		super(initialX, initialY, imageFactory);
+		setXSpeed(xSpeed);
+		setYSpeed(ySpeed);
 	}
 
 	@Override

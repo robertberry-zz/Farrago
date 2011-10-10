@@ -9,9 +9,9 @@ public class Player extends Entity {
 	private static double ACCELERATION_PER_STEP = 0.010;
 	
 	private static double MAXIMUM_ACCELERATION = 0.05;
-	
+		
 	private int lives = 3;
-
+	
 	public Player(double initial_x, double initial_y, ImageFactory imageFactory) {
 		super(initial_x, initial_y, imageFactory);
 	}
@@ -23,8 +23,9 @@ public class Player extends Entity {
 
 	@Override
 	protected void stepBehaviour(GameContainer gc, int delta) {
-		/* move the player */
 		Input input = gc.getInput();
+		
+		/* move the player */
 		double accelerationChange = 0;
 		
 		if (input.isKeyDown(Input.KEY_LEFT) ||
@@ -58,8 +59,8 @@ public class Player extends Entity {
 		}
 		
 		/* prevent from going off left or right side of screen */
-		double radius, x, y, width;
-		radius = getRadius(); x = getX(); y = getY(); width = gc.getWidth();
+		double radius, x, width;
+		radius = getRadius(); x = getX(); width = gc.getWidth();
 		
 		if (x + radius > width) {
 			setXAcceleration(0);
