@@ -49,6 +49,7 @@ public class Farrago extends BasicGame {
 	public void init(GameContainer gc) throws SlickException {
 		// Load entities, passing them the CachedImageFactory
 		background = imageFactory.createImage("background.png");
+		entities.add(new Player(WIDTH / 2, HEIGHT - 20, imageFactory));
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import org.newdawn.slick.Image;
  * @author Robert Berry
  */
 abstract public class Entity {
-	private double x, y, xSpeed, ySpeed, xAcceleration, yAcceleration, radius;
+	private double x, y, xSpeed=0, ySpeed=0, xAcceleration=0, yAcceleration=0, radius;
 	private Image sprite;
 	
 	/**
@@ -85,6 +85,78 @@ abstract public class Entity {
 	 */
 	public void draw() {
 		sprite.drawCentered((int) x, (int) y);
+	}
+
+	/**
+	 * The x speed of the Entity
+	 * 
+	 * @return The speed
+	 */
+	public double getXSpeed() {
+		return xSpeed;
+	}
+
+	/**
+	 * Sets the x speed of the Entity
+	 * 
+	 * @param xSpeed The speed
+	 */
+	public void setXSpeed(double xSpeed) {
+		this.xSpeed = xSpeed;
+	}
+
+	/**
+	 * Gets the y speed of the Entity
+	 * 
+	 * @return The speed
+	 */
+	public double getYSpeed() {
+		return ySpeed;
+	}
+
+	/**
+	 * Sets the y speed of the Entity
+	 * 
+	 * @param ySpeed The speed
+	 */
+	public void setYSpeed(double ySpeed) {
+		this.ySpeed = ySpeed;
+	}
+
+	/**
+	 * Gets the x acceleration of the Entity
+	 * 
+	 * @return The acceleration
+	 */
+	public double getXAcceleration() {
+		return xAcceleration;
+	}
+
+	/**
+	 * Sets the x acceleration of the Entity
+	 * 
+	 * @param xAcceleration The acceleration
+	 */
+	public void setXAcceleration(double xAcceleration) {
+		this.xAcceleration = xAcceleration;
+	}
+
+	/**
+	 * Gets the y acceleration of the Entity
+	 * 
+	 * @return yAcceleration The acceleration
+	 */
+	public double getYAcceleration() {
+		return yAcceleration;
+	}
+
+	/**
+	 * Sets the y acceleration of the Entity
+	 * 
+	 * @param yAcceleration The acceleration
+	 */
+	public void setYAcceleration(double yAcceleration) {
+		this.yAcceleration = yAcceleration;
 	}
 
 	/**
