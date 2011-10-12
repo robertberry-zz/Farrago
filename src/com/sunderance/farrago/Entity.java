@@ -12,6 +12,7 @@ import org.newdawn.slick.Image;
 abstract public class Entity {
 	private double x, y, xSpeed=0, ySpeed=0, xAcceleration=0, yAcceleration=0, radius;
 	private Image sprite;
+	private boolean dead;	
 	
 	/**
 	 * Constructs an Entity at a given position with its sprite loaded from a
@@ -64,7 +65,17 @@ abstract public class Entity {
 	 * 
 	 * @return Whether dead
 	 */
-	abstract public boolean isDead();
+	public boolean isDead() {
+		return dead;
+	}
+	
+	/**
+	 * Removes the entity from the game
+	 */
+	public void kill() {
+		dead = true;
+	}
+	
 	
 	/**
 	 * Updates position of the entity given the amount of time passed
@@ -208,8 +219,7 @@ abstract public class Entity {
 	 * @return The distance
 	 */
 	public double getDistanceFrom(Entity other) {
-		return (float) Math.sqrt(Math.pow(other.getX() - x, 2) + 
-			Math.pow(other.getY() - y, 2));
+		return (float) Math.hypot(other.getX() - x, other.getY() - y);
 	}
 	
 	/**
@@ -219,6 +229,6 @@ abstract public class Entity {
 	 * @return Whether overlapping
 	 */
 	public boolean overlaps(Entity other) {
-		return radius + other.getRadius() <= getDistanceFrom(other);
+		return radius + other.getRadius() >= getDistanceFrom(other);
 	}
 }

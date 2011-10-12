@@ -6,20 +6,33 @@ import org.newdawn.slick.Input;
 
 public class Player extends Entity {
 	private static double DECELERATION_PER_STEP = 0.005;
-	
 	private static double ACCELERATION_PER_STEP = 0.010;
-	
 	private static double MAXIMUM_ACCELERATION = 0.05;
-		
-	private int lives = 3;
+	private static double GUN_RECHARGE_TIME = 100.0;
+	
+	private Gun gun;
 	
 	public Player(double initial_x, double initial_y) {
 		super(initial_x, initial_y, "player.png");
+		gun = new Gun(this, GUN_RECHARGE_TIME, new PlayerBulletFactory());
 	}
 
 	@Override
 	protected void stepBehaviour(GameContainer gc, Game game, int delta) {
 		Input input = gc.getInput();
+		Farrago fgame = (Farrago) game;
+		
+		/* shoot a bullet? */
+		if (input.isKeyDown(Input.KEY_SPACE) && gun.ready()) {
+			try {
+				fgame.queueEntity(gun.shoot(0.0, -5.0));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			gun.recharge(delta);
+		}
 		
 		/* move the player */
 		double accelerationChange = 0;
@@ -67,10 +80,5 @@ public class Player extends Entity {
 			setXSpeed(0);
 			setX(0 + radius);
 		}
-	}
-
-	@Override
-	public boolean isDead() {
-		return lives <= 0;
 	}
 }

@@ -8,7 +8,6 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -34,17 +33,18 @@ public class Farrago extends BasicGame {
 	private static int WIDTH = 800, HEIGHT = 600;
 	private static int PLAYER_SPAWN_X = WIDTH / 2, PLAYER_SPAWN_Y = HEIGHT - 45;
 	private static boolean FULL_SCREEN = false;
-	private static double RECHARGE_SHOT_TIME = 100.0;
 	
 	private static double ENEMY_SPAWN_TIME = 1000.0;
 	
-	private double untilRecharge = 0.0;	
 	private Player player;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();
 	private Image background;
 	
 	private LinkedList<Entity> enemies = new LinkedList<Entity>();
-	
+
+	// change this type to a queue instead of a linked list
+	private LinkedList<Entity> queuedEntities = new LinkedList<Entity>();
+		
 	private double untilEnemySpawn = ENEMY_SPAWN_TIME;
 	
 	private EnemyShipFactory enemyFactory;
@@ -69,6 +69,15 @@ public class Farrago extends BasicGame {
 	public void addEntity(Entity e) {
 		entities.add(e);
 	}
+	
+	/**
+	 * Queues an entity for creation
+	 * 
+	 * @param e The entity
+	 */
+	public void queueEntity(Entity e) {
+		queuedEntities.add(e);
+	}
 
 	/**
 	 * Returns a list of enemies in the game
@@ -84,14 +93,18 @@ public class Farrago extends BasicGame {
 		// Create background and player
 		background = ResourceManager.getInstance().getImage("background.png");
 		addEntity(player = new Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y));
-
+		
 		// Create enemy factory
 		enemyFactory = new EnemyShipFactory(gc.getWidth());		
 	}
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
-		Input input = gc.getInput();
+		// add queued entities
+		for (ListIterator<Entity> it = queuedEntities.listIterator(); it.hasNext();) {
+			entities.add(it.next());
+			it.remove();
+		}
 		
 		// unset references to any dead entities
 		for (ListIterator<Entity> it = entities.listIterator(); it.hasNext();) {
@@ -107,19 +120,6 @@ public class Farrago extends BasicGame {
 			}
 		}
 		
-		/* shoot bullet if is time */
-		if (untilRecharge > 0.0) {
-			if (delta > untilRecharge) {
-				untilRecharge = 0.0;
-			} else {
-				untilRecharge -= delta;
-			}
-		} else if (input.isKeyDown(Input.KEY_SPACE)) {
-			// i need to create the entity :[
-			addEntity(new PlayerBullet(player.getX(), player.getY() - player.getRadius() - 5));
-			untilRecharge = RECHARGE_SHOT_TIME;
-		}
-		
 		/* spawn an enemy? */
 		untilEnemySpawn -= delta;
 		if (untilEnemySpawn <= 0) {
@@ -127,6 +127,13 @@ public class Farrago extends BasicGame {
 			addEntity(enemy);
 			enemies.add(enemy);
 			untilEnemySpawn = ENEMY_SPAWN_TIME;
+		}
+		
+		/* if player collides with enemy, kill player */
+		for (Entity enemy : enemies) {
+			if (player.overlaps(enemy)) {
+				player.kill();
+			}
 		}
 		
 		// call step code for all entities

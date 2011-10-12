@@ -3,13 +3,14 @@ package com.sunderance.farrago;
 public class Gun {
 	private Entity owner;
 	private BulletFactory bulletFactory;
-	private double untilCharged = 0.0, rechargeTime = 0.0, angle = 0.0;
+	private double untilCharged = 0.0, rechargeTime = 0.0;
 
 	public Gun(Entity owner, double rechargeTime, BulletFactory bulletFactory) {
 		this.owner = owner;
 		if (rechargeTime < 0) {
 			// throw error
 		}
+		this.bulletFactory = bulletFactory;
 		this.rechargeTime = rechargeTime;
 	}
 	
@@ -24,22 +25,17 @@ public class Gun {
 	public double getY() {
 		return owner.getY();
 	}
-
-	public void setAngle(double angle) {
-		this.angle = angle;
-	}
 	
-	public double getAngle() {
-		return angle;
+	public void recharge(double delta) {
+		this.untilCharged -= delta;
 	}
 		
-	public Bullet shoot() {
+	public Bullet shoot(double xSpeed, double ySpeed) throws Exception {
 		if (!this.ready()) {
-			// throw error
-			return null;
+			throw new Exception("Gun is not ready.");
 		}
 		this.untilCharged = this.rechargeTime;
-		Bullet bullet = this.bulletFactory.createBullet(getX(), getY(), getAngle());
+		Bullet bullet = this.bulletFactory.createBullet(getX(), getY(), xSpeed, ySpeed);
 		return bullet;
 	}
 }
