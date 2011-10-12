@@ -1,15 +1,11 @@
 package com.sunderance.farrago;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-
 public class Gun {
 	private Entity owner;
-	private Class bulletClass;
-	private double untilCharged = 0.0, rechargeTime = 0.0;
+	private BulletFactory bulletFactory;
+	private double untilCharged = 0.0, rechargeTime = 0.0, angle = 0.0;
 
-	public Gun(Entity owner, Class bulletClass, double rechargeTime) {
+	public Gun(Entity owner, double rechargeTime, BulletFactory bulletFactory) {
 		this.owner = owner;
 		if (rechargeTime < 0) {
 			// throw error
@@ -28,27 +24,22 @@ public class Gun {
 	public double getY() {
 		return owner.getY();
 	}
+
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
 	
-	private Entity createBullet() {
-		try {
-			Constructor bulletConstructor = 
-					bulletClass.getConstructor(double.class, double.class);
-			return bulletConstructor.newInstance(getX(), getY());
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public double getAngle() {
+		return angle;
 	}
 		
-	public Entity shoot() {
+	public Bullet shoot() {
 		if (!this.ready()) {
 			// throw error
 			return null;
 		}
 		this.untilCharged = this.rechargeTime;
-		return this.createBullet();
+		Bullet bullet = this.bulletFactory.createBullet(getX(), getY(), getAngle());
+		return bullet;
 	}
 }

@@ -12,7 +12,6 @@ public class PlayerBullet extends Bullet {
 
 	@Override
 	protected void stepBehaviour(GameContainer gc, Game game, int delta) {
-		// TODO Auto-generated method stub
 		
 	}
 

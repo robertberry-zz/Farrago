@@ -61,8 +61,9 @@ public class Farrago extends BasicGame {
 		// Load entities, passing them the CachedImageFactory
 		background = ResourceManager.getInstance().getImage("background.png");
 		addEntity(player = new Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y));
-		// test bullet
-		addEntity(new PlayerBullet(WIDTH/2, HEIGHT/2));
+
+		// test enemy
+		addEntity(new EnemyMarmot(WIDTH/2, 20));
 	}
 
 	@Override
