@@ -20,7 +20,7 @@ public class EnemyShipFactory {
 		if (rand <= 0.33) {
 			return createMarmot();
 		} else if (rand <= 0.66) {
-			return createMarmot();
+			return createVirgo();
 		} else {
 			return createMarmot();
 		}
@@ -28,5 +28,9 @@ public class EnemyShipFactory {
 	
 	public EnemyMarmot createMarmot() {
 		return new EnemyMarmot(randomX(), Y_START);
+	}
+	
+	public EnemyVirgo createVirgo() {
+		return new EnemyVirgo(randomX(), Y_START);
 	}
 }
