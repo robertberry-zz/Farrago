@@ -3,6 +3,11 @@ package com.sunderance.farrago;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 
+/**
+ * Marmot enemy - darts about pointlessly
+ * 
+ * @author Robert Berry
+ */
 class EnemyMarmot extends Enemy {
 	public static double SPEED = 3.5;
 	public static double LEFT_RIGHT_MARGIN = 10;

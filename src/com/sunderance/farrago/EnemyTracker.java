@@ -3,6 +3,11 @@ package com.sunderance.farrago;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 
+/**
+ * Tracker enemy - follows the user around
+ * 
+ * @author Robert Berry
+ */
 public class EnemyTracker extends Enemy {
 	private static double SPEED = 5.0;	
 	private static double RECHARGE_TIME = 200.0;

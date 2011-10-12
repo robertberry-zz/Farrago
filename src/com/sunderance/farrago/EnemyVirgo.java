@@ -3,6 +3,11 @@ package com.sunderance.farrago;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 
+/**
+ * Virgo enemy - has two cannons that fire out in a V
+ * 
+ * @author Robert Berry
+ */
 public class EnemyVirgo extends Enemy {
 	double SPEED = 5.0;
 	double RECHARGE_TIME = 400.0;
