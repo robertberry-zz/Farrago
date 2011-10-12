@@ -65,6 +65,15 @@ public class Farrago extends BasicGame {
 	}
 	
 	/**
+	 * Returns the Player entity
+	 * 
+	 * @return The player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+	
+	/**
 	 * Adds an enemy entity into the game
 	 * 
 	 * @param e The entity

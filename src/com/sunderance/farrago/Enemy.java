@@ -17,9 +17,9 @@ abstract public class Enemy extends Entity {
 		this.direction = direction;
 		
 		if (direction == Direction.LEFT) {
-			setXSpeed(getSpeed());
-		} else {
 			setXSpeed(-getSpeed());
+		} else {
+			setXSpeed(getSpeed());
 		}
 	}
 	
