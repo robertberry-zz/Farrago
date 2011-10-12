@@ -101,9 +101,10 @@ public class Farrago extends BasicGame {
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		// add queued entities
-		for (ListIterator<Entity> it = queuedEntities.listIterator(); it.hasNext();) {
-			entities.add(it.next());
-			it.remove();
+		Entity queuedEntity = queuedEntities.poll();
+		while (queuedEntity != null) {
+			entities.add(queuedEntity);
+			queuedEntity = queuedEntities.poll();
 		}
 		
 		// unset references to any dead entities
