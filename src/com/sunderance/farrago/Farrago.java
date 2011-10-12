@@ -22,6 +22,12 @@ import org.newdawn.slick.SlickException;
  * This is my homework for week 2 of SquashMonster's Learn Game Programming ureddit class.
  * It's a simple shooter in the vein of Galaga, Galaxian or Xevious.
  * 
+ * -- Re the Farrago thing, as I am now approaching the deadline I can confirm this is
+ * true. I first tried to avoid all global state, passing through objects like the
+ * CachedImageFactory to load sprites into entities. Then deciding that made the code
+ * messy I tried to implement a system for building entities based on components. Then
+ * I realized it was Wednesday so scrapped it all and just tried to finish the thing!!
+ * 
  * @author Robert Berry
  */
 public class Farrago extends BasicGame {
@@ -30,10 +36,18 @@ public class Farrago extends BasicGame {
 	private static boolean FULL_SCREEN = false;
 	private static double RECHARGE_SHOT_TIME = 100.0;
 	
+	private static double ENEMY_SPAWN_TIME = 1000.0;
+	
 	private double untilRecharge = 0.0;	
 	private Player player;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();
 	private Image background;
+	
+	private LinkedList<Entity> enemies = new LinkedList<Entity>();
+	
+	private double untilEnemySpawn = ENEMY_SPAWN_TIME;
+	
+	private EnemyShipFactory enemyFactory;
 	
 	public Farrago() {
 		super("Farrago");
@@ -56,14 +70,23 @@ public class Farrago extends BasicGame {
 		entities.add(e);
 	}
 
+	/**
+	 * Returns a list of enemies in the game
+	 * 
+	 * @return The enemies
+	 */
+	public LinkedList<Entity> getEnemies() {
+		return enemies;
+	}
+	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		// Load entities, passing them the CachedImageFactory
+		// Create background and player
 		background = ResourceManager.getInstance().getImage("background.png");
 		addEntity(player = new Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y));
 
-		// test enemy
-		addEntity(new EnemyMarmot(WIDTH/2, 20));
+		// Create enemy factory
+		enemyFactory = new EnemyShipFactory(gc.getWidth());		
 	}
 
 	@Override
@@ -76,8 +99,15 @@ public class Farrago extends BasicGame {
 				it.remove();
 			}
 		}
+
+		// do for dead enemies too
+		for (ListIterator<Entity> it = enemies.listIterator(); it.hasNext();) {
+			if (it.next().isDead()) {
+				it.remove();
+			}
+		}
 		
-		/* shoot bullet */
+		/* shoot bullet if is time */
 		if (untilRecharge > 0.0) {
 			if (delta > untilRecharge) {
 				untilRecharge = 0.0;
@@ -88,7 +118,16 @@ public class Farrago extends BasicGame {
 			// i need to create the entity :[
 			addEntity(new PlayerBullet(player.getX(), player.getY() - player.getRadius() - 5));
 			untilRecharge = RECHARGE_SHOT_TIME;
-		}		
+		}
+		
+		/* spawn an enemy? */
+		untilEnemySpawn -= delta;
+		if (untilEnemySpawn <= 0) {
+			Enemy enemy = enemyFactory.createRandomEnemy();
+			addEntity(enemy);
+			enemies.add(enemy);
+			untilEnemySpawn = ENEMY_SPAWN_TIME;
+		}
 		
 		// call step code for all entities
 		for (Entity entity : entities) {

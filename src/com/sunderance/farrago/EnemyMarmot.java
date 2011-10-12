@@ -4,12 +4,24 @@ import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 
 class EnemyMarmot extends Enemy {
-
+	/**
+	 * Speed of the ship
+	 */
 	public static double SPEED = 3.5;
 	
+	/**
+	 * How close the ship will get to the left and right sides of the screen
+	 */
 	public static double LEFT_RIGHT_MARGIN = 10;
 	
+	/**
+	 * The chance the ship will change direction randomly
+	 */
 	public static double CHANGE_DIRECTION_CHANCE = 0.25;
+	
+	/**
+	 * The interval between the ship deciding to change randomly
+	 */
 	public static double CHANGE_DIRECTION_INTERVAL = 300;
 	
 	private double tillChangeDirection = CHANGE_DIRECTION_INTERVAL;
@@ -22,6 +34,11 @@ class EnemyMarmot extends Enemy {
 		setYSpeed(SPEED);
 	}
 	
+	/**
+	 * Sets whether the ship is moving left or right
+	 * 
+	 * @param direction The direction
+	 */
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 		
@@ -32,10 +49,18 @@ class EnemyMarmot extends Enemy {
 		}
 	}
 	
+	/**
+	 * The horizontal direction the ship is moving in
+	 * 
+	 * @return The direction
+	 */
 	public Direction getDirection() {
 		return direction;
 	}
 	
+	/**
+	 * Swaps the horizontal direction the ship is moving in
+	 */
 	public void swapDirection() {
 		setDirection(getDirection().getOpposite());
 	}
