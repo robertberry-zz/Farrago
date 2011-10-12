@@ -33,7 +33,7 @@ public class Farrago extends BasicGame {
 	private static int WIDTH = 800, HEIGHT = 600;
 	private static int PLAYER_SPAWN_X = WIDTH / 2, PLAYER_SPAWN_Y = HEIGHT - 45;
 	private static boolean FULL_SCREEN = false;
-	private static double ENEMY_SPAWN_TIME = 1000.0;
+	private static double ENEMY_SPAWN_TIME = 700.0;
 	
 	private Player player;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();

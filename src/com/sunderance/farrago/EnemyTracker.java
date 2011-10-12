@@ -4,11 +4,16 @@ import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 
 public class EnemyTracker extends Enemy {
-	double SPEED = 5.0;	
+	private static double SPEED = 5.0;	
+	private static double RECHARGE_TIME = 200.0;
+	private static double BULLET_SPEED = 10;
+	
+	Gun gun;
 	
 	public EnemyTracker(double initial_x, double initial_y) {
 		super(initial_x, initial_y, "enemy-2.png");
 		setYSpeed(SPEED);
+		gun = new Gun(this, RECHARGE_TIME, new EnemyBombFactory());
 	}
 
 	@Override
@@ -21,10 +26,17 @@ public class EnemyTracker extends Enemy {
 		Farrago fgame = (Farrago) game;
 		Player player = fgame.getPlayer();
 		
+		/* follow player */
 		if (player.getX() > this.getX()) {
 			setDirection(Direction.RIGHT);
 		} else if (player.getX() < this.getX()) {
 			setDirection(Direction.LEFT);
+		}
+		
+		/* fire bomb */
+		gun.recharge(delta);
+		if (gun.ready()) {
+			fgame.queueEnemy(gun.shoot(0.0, BULLET_SPEED));
 		}
 		
 		/* kill if off screen */
