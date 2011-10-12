@@ -9,6 +9,7 @@ public class Player extends Entity {
 	private static double ACCELERATION_PER_STEP = 0.010;
 	private static double MAXIMUM_ACCELERATION = 0.05;
 	private static double GUN_RECHARGE_TIME = 100.0;
+	private static double BULLET_SPEED = 5.0;
 	
 	private Gun gun;
 	
@@ -24,12 +25,7 @@ public class Player extends Entity {
 		
 		/* shoot a bullet? */
 		if (input.isKeyDown(Input.KEY_SPACE) && gun.ready()) {
-			try {
-				fgame.queueEntity(gun.shoot(0.0, -5.0));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			fgame.queueEntity(gun.shoot(0.0, -BULLET_SPEED));
 		} else {
 			gun.recharge(delta);
 		}

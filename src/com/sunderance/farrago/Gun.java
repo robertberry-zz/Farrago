@@ -3,8 +3,8 @@ package com.sunderance.farrago;
 public class Gun {
 	private Entity owner;
 	private BulletFactory bulletFactory;
-	private double untilCharged = 0.0, rechargeTime = 0.0;
-
+	private double untilCharged = 0.0, rechargeTime = 0.0, yOffset = 0.0;
+	
 	public Gun(Entity owner, double rechargeTime, BulletFactory bulletFactory) {
 		this.owner = owner;
 		if (rechargeTime < 0) {
@@ -30,12 +30,13 @@ public class Gun {
 		this.untilCharged -= delta;
 	}
 		
-	public Bullet shoot(double xSpeed, double ySpeed) throws Exception {
-		if (!this.ready()) {
-			throw new Exception("Gun is not ready.");
-		}
+	public Bullet shoot(double xSpeed, double ySpeed) {
 		this.untilCharged = this.rechargeTime;
-		Bullet bullet = this.bulletFactory.createBullet(getX(), getY(), xSpeed, ySpeed);
+		Bullet bullet = this.bulletFactory.createBullet(getX(), getY() + yOffset, xSpeed, ySpeed);
 		return bullet;
+	}
+
+	public void setYOffset(double yOffset) {
+		this.yOffset = yOffset;
 	}
 }

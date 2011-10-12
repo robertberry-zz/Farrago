@@ -33,20 +33,14 @@ public class Farrago extends BasicGame {
 	private static int WIDTH = 800, HEIGHT = 600;
 	private static int PLAYER_SPAWN_X = WIDTH / 2, PLAYER_SPAWN_Y = HEIGHT - 45;
 	private static boolean FULL_SCREEN = false;
-	
 	private static double ENEMY_SPAWN_TIME = 1000.0;
 	
 	private Player player;
 	private LinkedList<Entity> entities = new LinkedList<Entity>();
 	private Image background;
-	
 	private LinkedList<Entity> enemies = new LinkedList<Entity>();
-
-	// change this type to a queue instead of a linked list
 	private LinkedList<Entity> queuedEntities = new LinkedList<Entity>();
-		
 	private double untilEnemySpawn = ENEMY_SPAWN_TIME;
-	
 	private EnemyShipFactory enemyFactory;
 	
 	public Farrago() {
@@ -71,7 +65,19 @@ public class Farrago extends BasicGame {
 	}
 	
 	/**
-	 * Queues an entity for creation
+	 * Adds an enemy entity into the game
+	 * 
+	 * @param e The entity
+	 */
+	public void queueEnemy(Entity e) {
+		queueEntity(e);
+		enemies.add(e);
+	}
+	
+	/**
+	 * Queues an entity for creation. This should be used by subclass entities that want
+	 * to create new entities in their step code. You can't just add to the list of entities
+	 * as it throws an error related to concurrency & thread access.
 	 * 
 	 * @param e The entity
 	 */

@@ -24,7 +24,12 @@ class EnemyMarmot extends Enemy {
 	 */
 	public static double CHANGE_DIRECTION_INTERVAL = 300;
 	
+	private static double RECHARGE_TIME = 120;
+	
+	private static double BULLET_SPEED = 5.0;
+	
 	private double tillChangeDirection = CHANGE_DIRECTION_INTERVAL;
+	private Gun gun;
 	
 	Direction direction;
 	
@@ -32,6 +37,8 @@ class EnemyMarmot extends Enemy {
 		super(initial_x, initial_y, "enemy-1.png");
 		setDirection(Direction.LEFT);
 		setYSpeed(SPEED);
+		gun = new Gun(this, RECHARGE_TIME, new EnemyBulletFactory());
+		gun.setYOffset(getRadius());
 	}
 	
 	/**
@@ -68,8 +75,15 @@ class EnemyMarmot extends Enemy {
 	@Override
 	protected void stepBehaviour(GameContainer gc, Game game, int delta) {
 		double width, height, x, y;
+		Farrago fgame = (Farrago) game;
 		x = getX(); y = getY();
 		width = gc.getWidth(); height = gc.getHeight();
+		
+		/* fiiiiiiireeee! */
+		gun.recharge(delta);
+		if (gun.ready()) {
+			fgame.queueEnemy(gun.shoot(0.0, BULLET_SPEED));
+		}
 		
 		/* stop going too far left or right */
 		if (x - LEFT_RIGHT_MARGIN <= 0 || x + LEFT_RIGHT_MARGIN > width) {
