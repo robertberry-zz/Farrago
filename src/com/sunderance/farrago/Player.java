@@ -1,5 +1,6 @@
 package com.sunderance.farrago;
 
+import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -12,17 +13,12 @@ public class Player extends Entity {
 		
 	private int lives = 3;
 	
-	public Player(double initial_x, double initial_y, ImageFactory imageFactory) {
-		super(initial_x, initial_y, imageFactory);
+	public Player(double initial_x, double initial_y) {
+		super(initial_x, initial_y, "player.png");
 	}
 
 	@Override
-	protected String getSpritePath() {
-		return "player.png";
-	}
-
-	@Override
-	protected void stepBehaviour(GameContainer gc, int delta) {
+	protected void stepBehaviour(GameContainer gc, Game game, int delta) {
 		Input input = gc.getInput();
 		
 		/* move the player */

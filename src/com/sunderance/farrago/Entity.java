@@ -1,5 +1,6 @@
 package com.sunderance.farrago;
 
+import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 
@@ -22,10 +23,11 @@ abstract public class Entity {
 	 * @param _radius
 	 */
 	public Entity(double initial_x, double initial_y,
-			ImageFactory imageFactory, double _radius) {
+			String spritePath, double _radius) {
 		x = initial_x;
 		y = initial_y;
-		sprite = imageFactory.createImage(getSpritePath());
+		ResourceManager resourceManager = ResourceManager.getInstance();
+		sprite = resourceManager.getImage(spritePath);
 		radius = _radius;
 	}
 	
@@ -39,27 +41,22 @@ abstract public class Entity {
 	 * @param imageFactory
 	 */
 	public Entity(double initial_x, double initial_y,
-			ImageFactory imageFactory) {
+			String spritePath) {
 		x = initial_x;
 		y = initial_y;
-		sprite = imageFactory.createImage(getSpritePath());
+		
+		ResourceManager resourceManager = ResourceManager.getInstance();
+		sprite = resourceManager.getImage(spritePath);
 		radius = Math.min(sprite.getHeight(), sprite.getWidth()) / 2.0;
 	}
-	
-	/**
-	 * Returns the path to the sprite image in the resources folder
-	 * 
-	 * @return The path
-	 */
-	abstract protected String getSpritePath();
-	
+		
 	/**
 	 * Performs subclass specific behaviour each step
 	 * 
 	 * @param gc The GameContainer for the game
 	 * @param delta The time delta
 	 */
-	abstract protected void stepBehaviour(GameContainer gc, int delta);
+	abstract protected void stepBehaviour(GameContainer gc, Game game, int delta);
 	
 	/**
 	 * Returns whether the entity is dead (and therefore can be removed from
@@ -74,8 +71,8 @@ abstract public class Entity {
 	 * 
 	 * @param time The amount of time elapsed
 	 */
-	public void step(GameContainer gc, int delta) {
-		stepBehaviour(gc, delta);
+	public void step(GameContainer gc, Game game, int delta) {
+		stepBehaviour(gc, game, delta);
 		x += xSpeed + Math.pow(delta, 2) * xAcceleration / 2;
 		y += ySpeed + Math.pow(delta, 2) * yAcceleration / 2;
 	}
