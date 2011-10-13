@@ -9,11 +9,10 @@ import org.newdawn.slick.GameContainer;
  * @author Robert Berry
  */
 public class EnemyTracker extends Enemy {
-	private static double SPEED = 5.0;	
+	private static double SPEED = 5.0;
 	private static double RECHARGE_TIME = 200.0;
-	private static double BULLET_SPEED = 10;
-	
-	Gun gun;
+	private static double BULLET_SPEED = 6;
+	private Gun gun;
 	
 	public EnemyTracker(double initial_x, double initial_y) {
 		super(initial_x, initial_y, "enemy-2.png");
